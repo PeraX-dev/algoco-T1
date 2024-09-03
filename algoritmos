@@ -1,0 +1,48 @@
+----------- Selection Sort -------------- O(n^2)
+#include <iostream>
+using namespace std;
+
+// cambia pos de elementos
+void swap(int *a, int *b) {
+  int temp = *a;
+  *a = *b;
+  *b = temp;
+}
+
+void printArray(int array[], int size) {
+  for (int i = 0; i < size; i++) {
+    cout << array[i] << " ";
+  }
+  cout << endl;
+}
+
+void selectionSort(int array[], int size) {
+  for (int step = 0; step < size - 1; step++) {
+    int min_idx = step;
+    for (int i = step + 1; i < size; i++) { 
+      // Dependiendo de > o < el ordenamiento cambia (de mayor a menor o menor a mayor)
+      if (array[i] < array[min_idx])
+        min_idx = i;
+    }
+
+    // put min at the correct position
+    swap(&array[min_idx], &array[step]);
+  }
+}
+
+int main() {
+  int cant;
+  cout<<"Ingrese cantidad de datos: "<<endl;
+  cin>>cant;
+  int data[cant];
+  for(int i = 0; i < cant; i++){
+  	cin>>data[i];
+  }
+  int size = sizeof(data) / sizeof(data[0]);
+  selectionSort(data, size);
+  cout << "Sorted array in Acsending Order:\n";
+  printArray(data, size);
+}
+
+-----------------------------------------
+-------------- Merge Sort --------------- O(n*log(n))
