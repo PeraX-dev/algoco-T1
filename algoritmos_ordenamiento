@@ -32,21 +32,17 @@ void selectionSort(int array[], int size) {
 }
 
 int main() {
-  int cant;
-  cout<<"Ingrese cantidad de datos: "<<endl;
-  cin>>cant;
-  int data[cant];
-  for(int i = 0; i < cant; i++){
-  	cin>>data[i];
-  }
+
+  int data[cant]; // REEMPLACE "cant" CON LA CANTIDAD DE ELEMENTOS DENTRO DEL DATASET A PROBAR
+                  // RECUERDE TAMBIEN ASIGNARLE EL DATASET AL ARREGLO
   int size = sizeof(data) / sizeof(data[0]);
   auto start = chrono::high_resolution_clock::now();
   selectionSort(data, size);
   auto end = chrono::high_resolution_clock::now();
   chrono::duration<double> elapsed = end - start;
   cout << "Arreglo ordenado de manera ascendente:\n";
-  cout << "Elapsed time: " << elapsed.count() << " seconds\n";
   printArray(data, size);
+  cout << "Elapsed time: " << elapsed.count() << " seconds\n";
   return 0;
 }
 
@@ -121,13 +117,10 @@ void printArray(int arr[], int size) {
 }
 
 int main() {
-  int cant;
-  cout<<"Ingrese cantidad de datos: "<<endl;
-  cin>>cant;
-  int arr[cant];
-  for(int i = 0; i < cant; i++){
-      cin>>arr[i];
-  }
+
+  int arr[cant]; // REEMPLACE "cant" CON LA CANTIDAD DE ELEMENTOS DENTRO DEL DATASET A PROBAR
+                 // RECUERDE TAMBIEN ASIGNARLE EL DATASET AL ARREGLO
+
   int size = sizeof(arr) / sizeof(arr[0]);
   auto start = chrono::high_resolution_clock::now();
   mergeSort(arr, 0, size - 1);
@@ -203,13 +196,9 @@ void quickSort(int array[], int low, int high) {
 }
 
 int main() {
-  int cant;
-  cout<<"Ingrese cantidad de datos: "<<endl;
-  cin>>cant;
-  int data[cant];
-  for(int i = 0; i < cant; i++){
-      cin>>data[i];
-  }
+  
+  int data[cant]; // REEMPLACE "cant" CON LA CANTIDAD DE ELEMENTOS DENTRO DEL DATASET A PROBAR
+                  // RECUERDE TAMBIEN ASIGNARLE EL DATASET AL ARREGLO
   int n = sizeof(data) / sizeof(data[0]);
   
 //  cout << "Arreglo sin ordenar: \n"; // Printea los datos entregados
@@ -236,15 +225,9 @@ void show(int a[], int array_size) {
 }
 
 int main() {
-  int cant;
-  cout<<"Ingrese cantidad de datos: "<<endl;
-  cin>>cant;
-  int arr[cant];
   
-  for(int i = 0; i < cant; i++){
-  	cin>>arr[i];
-  }
-  
+  int arr[cant]; // REEMPLACE "cant" CON LA CANTIDAD DE ELEMENTOS DENTRO DEL DATASET A PROBAR
+                 // RECUERDE TAMBIEN ASIGNARLE EL DATASET AL ARREGLO
   int arrsize = sizeof(arr) / sizeof(arr[0]);
   auto start = chrono::high_resolution_clock::now();      
   sort(arr, arr + arrsize);
