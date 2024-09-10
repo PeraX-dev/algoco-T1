@@ -225,6 +225,7 @@ int main() {
 -------- Standard Library Sort ---------- Best: O(n*log(n)); Worst: O(n*log(n)); Average: O(n*log(n));
 #include <bits/stdc++.h>
 #include <iostream>
+#include <chrono>
 using namespace std;
 
 void show(int a[], int array_size) { 
@@ -245,12 +246,13 @@ int main() {
   }
   
   int arrsize = sizeof(arr) / sizeof(arr[0]);
-        
+  auto start = chrono::high_resolution_clock::now();      
   sort(arr, arr + arrsize);
-  
+  auto end = chrono::high_resolution_clock::now();
+  chrono::duration<double> elapsed = end - start;
   cout<<"El arreglo ordenado es: "<<endl;
   show(arr, arrsize);
-  
+  cout << "Elapsed time: " << elapsed.count() << " seconds\n";  
   return 0;
 }
 -----------------------------------------
