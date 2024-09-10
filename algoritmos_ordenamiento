@@ -1,5 +1,6 @@
 ----------- Selection Sort -------------- Best: O(n^2); Worst: O(n^2); Average: O(n^2);
 #include <iostream>
+#include <chrono>
 using namespace std;
 
 // cambia pos de elementos
@@ -39,9 +40,14 @@ int main() {
   	cin>>data[i];
   }
   int size = sizeof(data) / sizeof(data[0]);
+  auto start = chrono::high_resolution_clock::now();
   selectionSort(data, size);
-  cout << "Sorted array in Acsending Order:\n";
+  auto end = chrono::high_resolution_clock::now();
+  chrono::duration<double> elapsed = end - start;
+  cout << "Arreglo ordenado de manera ascendente:\n";
+  cout << "Elapsed time: " << elapsed.count() << " seconds\n";
   printArray(data, size);
+  return 0;
 }
 
 -----------------------------------------
