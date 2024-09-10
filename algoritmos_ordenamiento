@@ -26,7 +26,7 @@ void selectionSort(int array[], int size) {
         min_idx = i;
     }
 
-    // put min at the correct position
+    // coloca el minimo en la posicion correcta
     swap(&array[min_idx], &array[step]);
   }
 }
@@ -55,6 +55,7 @@ int main() {
 -------------- Merge Sort --------------- Best: O(n*log(n)); Worst: O(n*log(n)); Average: O(n*log(n));
 
 #include <iostream>
+#include <chrono>
 using namespace std;
 
 // junta los sub-arreglos
@@ -124,19 +125,25 @@ int main() {
   cout<<"Ingrese cantidad de datos: "<<endl;
   cin>>cant;
   int arr[cant];
+  for(int i = 0; i < cant; i++){
+      cin>>arr[i];
+  }
   int size = sizeof(arr) / sizeof(arr[0]);
-
+  auto start = chrono::high_resolution_clock::now();
   mergeSort(arr, 0, size - 1);
-
+  auto end = chrono::high_resolution_clock::now();
+  chrono::duration<double> elapsed = end - start;
+  
   cout << "Arreglo ordenado: \n";
-
   printArray(arr, size);
+  cout << "Elapsed time: " << elapsed.count() << " seconds\n";
   return 0;
 }
 
 -----------------------------------------
 -------------- Quick Sort --------------- Best: O(n*log(n)); Worst: O(n^2); Average: O(n*log(n));
 #include <iostream>
+#include <chrono>
 using namespace std;
 
 // swap de elementos
@@ -200,12 +207,15 @@ int main() {
   cout<<"Ingrese cantidad de datos: "<<endl;
   cin>>cant;
   int data[cant];
+  for(int i = 0; i < cant; i++){
+      cin>>data[i];
+  }
   int n = sizeof(data) / sizeof(data[0]);
   
-  cout << "Arreglo sin ordenar: \n"; // Printea los datos entregados
-  printArray(data, n);
+//  cout << "Arreglo sin ordenar: \n"; // Printea los datos entregados
+//  printArray(data, n);
   
-  // llama a sortear
+  // llama la fx para ordenar
   quickSort(data, 0, n - 1);
   
   cout << "Arreglo ordenado de manera ascendente: \n";
