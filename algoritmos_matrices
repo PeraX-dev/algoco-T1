@@ -1,4 +1,4 @@
------------ Iterativo Cúbico Tradicional ----------- 
+----------- Iterativo Cúbico Tradicional ----------- O(n^3)
 #include <iostream>
 
 using namespace std;
@@ -73,6 +73,229 @@ int main() {
     delete[] A;
     delete[] B;
     delete[] C;
+
+    return 0;
+}
+----------------------------------------------------
+------------- Iterativo con Traspuesta ------------- O(n^3)
+#include <iostream>
+
+using namespace std;
+
+void transposeMatrix(int** B, int** B_T, int rowsB, int colsB) {
+    for (int i = 0; i < rowsB; ++i) {
+        for (int j = 0; j < colsB; ++j) {
+            B_T[j][i] = B[i][j];
+        }
+    }
+}
+
+void multiplyMatrices(int** A, int** B_T, int** C, int rowsA, int colsA, int colsB) {
+    for (int i = 0; i < rowsA; ++i) {
+        for (int j = 0; j < colsB; ++j) {
+            C[i][j] = 0;
+            for (int k = 0; k < colsA; ++k) {
+                C[i][j] += A[i][k] * B_T[j][k];
+            }
+        }
+    }
+}
+
+int main() {
+    int rowsA, colsA, rowsB, colsB;
+    cout << "Enter the number of rows and columns of matrix A: ";
+    cin >> rowsA >> colsA;
+    cout << "Enter the number of rows and columns of matrix B: ";
+    cin >> rowsB >> colsB;
+
+    if (colsA != rowsB) {
+        cout << "Matrix multiplication not possible with these dimensions." << endl;
+        return 1;
+    }
+
+    // Allocate memory for matrices
+    int** A = new int*[rowsA];
+    int** B = new int*[rowsB];
+    int** B_T = new int*[colsB];
+    int** C = new int*[rowsA];
+    for (int i = 0; i < rowsA; ++i) {
+        A[i] = new int[colsA];
+        C[i] = new int[colsB];
+    }
+    for (int i = 0; i < rowsB; ++i) {
+        B[i] = new int[colsB];
+    }
+    for (int i = 0; i < colsB; ++i) {
+        B_T[i] = new int[rowsB];
+    }
+
+    cout << "Enter elements of matrix A:\n";
+    for (int i = 0; i < rowsA; ++i) {
+        for (int j = 0; j < colsA; ++j) {
+            cin >> A[i][j];
+        }
+    }
+
+    cout << "Enter elements of matrix B:\n";
+    for (int i = 0; i < rowsB; ++i) {
+        for (int j = 0; j < colsB; ++j) {
+            cin >> B[i][j];
+        }
+    }
+
+    // Transpose matrix B
+    transposeMatrix(B, B_T, rowsB, colsB);
+
+    // Multiply matrices A and B_T
+    multiplyMatrices(A, B_T, C, rowsA, colsA, colsB);
+
+    cout << "Resultant matrix C:\n";
+    for (int i = 0; i < rowsA; ++i) {
+        for (int j = 0; j < colsB; ++j) {
+            cout << C[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    // Deallocate memory
+    for (int i = 0; i < rowsA; ++i) {
+        delete[] A[i];
+        delete[] C[i];
+    }
+    for (int i = 0; i < rowsB; ++i) {
+        delete[] B[i];
+    }
+    for (int i = 0; i < colsB; ++i) {
+        delete[] B_T[i];
+    }
+    delete[] A;
+    delete[] B;
+    delete[] B_T;
+    delete[] C;
+
+    return 0;
+}
+----------------------------------------------------
+--------------------- Strassen --------------------- O(n^2.8)
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void addMatrices(vector<vector<int>>& A, vector<vector<int>>& B, vector<vector<int>>& C, int size) {
+    for (int i = 0; i < size; ++i)
+        for (int j = 0; j < size; ++j)
+            C[i][j] = A[i][j] + B[i][j];
+}
+
+void subtractMatrices(vector<vector<int>>& A, vector<vector<int>>& B, vector<vector<int>>& C, int size) {
+    for (int i = 0; i < size; ++i)
+        for (int j = 0; j < size; ++j)
+            C[i][j] = A[i][j] - B[i][j];
+}
+
+void strassen(vector<vector<int>>& A, vector<vector<int>>& B, vector<vector<int>>& C, int size) {
+    if (size == 1) {
+        C[0][0] = A[0][0] * B[0][0];
+        return;
+    }
+
+    int newSize = size / 2;
+    vector<int> inner(newSize);
+    vector<vector<int>> 
+        A11(newSize, inner), A12(newSize, inner), A21(newSize, inner), A22(newSize, inner),
+        B11(newSize, inner), B12(newSize, inner), B21(newSize, inner), B22(newSize, inner),
+        C11(newSize, inner), C12(newSize, inner), C21(newSize, inner), C22(newSize, inner),
+        M1(newSize, inner), M2(newSize, inner), M3(newSize, inner), M4(newSize, inner),
+        M5(newSize, inner), M6(newSize, inner), M7(newSize, inner),
+        AResult(newSize, inner), BResult(newSize, inner);
+
+    for (int i = 0; i < newSize; i++) {
+        for (int j = 0; j < newSize; j++) {
+            A11[i][j] = A[i][j];
+            A12[i][j] = A[i][j + newSize];
+            A21[i][j] = A[i + newSize][j];
+            A22[i][j] = A[i + newSize][j + newSize];
+
+            B11[i][j] = B[i][j];
+            B12[i][j] = B[i][j + newSize];
+            B21[i][j] = B[i + newSize][j];
+            B22[i][j] = B[i + newSize][j + newSize];
+        }
+    }
+
+    addMatrices(A11, A22, AResult, newSize);
+    addMatrices(B11, B22, BResult, newSize);
+    strassen(AResult, BResult, M1, newSize);
+
+    addMatrices(A21, A22, AResult, newSize);
+    strassen(AResult, B11, M2, newSize);
+
+    subtractMatrices(B12, B22, BResult, newSize);
+    strassen(A11, BResult, M3, newSize);
+
+    subtractMatrices(B21, B11, BResult, newSize);
+    strassen(A22, BResult, M4, newSize);
+
+    addMatrices(A11, A12, AResult, newSize);
+    strassen(AResult, B22, M5, newSize);
+
+    subtractMatrices(A21, A11, AResult, newSize);
+    addMatrices(B11, B12, BResult, newSize);
+    strassen(AResult, BResult, M6, newSize);
+
+    subtractMatrices(A12, A22, AResult, newSize);
+    addMatrices(B21, B22, BResult, newSize);
+    strassen(AResult, BResult, M7, newSize);
+
+    addMatrices(M1, M4, AResult, newSize);
+    subtractMatrices(AResult, M5, BResult, newSize);
+    addMatrices(BResult, M7, C11, newSize);
+
+    addMatrices(M3, M5, C12, newSize);
+    addMatrices(M2, M4, C21, newSize);
+
+    addMatrices(M1, M3, AResult, newSize);
+    subtractMatrices(AResult, M2, BResult, newSize);
+    addMatrices(BResult, M6, C22, newSize);
+
+    for (int i = 0; i < newSize; i++) {
+        for (int j = 0; j < newSize; j++) {
+            C[i][j] = C11[i][j];
+            C[i][j + newSize] = C12[i][j];
+            C[i + newSize][j] = C21[i][j];
+            C[i + newSize][j + newSize] = C22[i][j];
+        }
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter the size of the matrices (must be a power of 2): ";
+    cin >> n;
+
+    vector<int> inner(n);
+    vector<vector<int>> A(n, inner), B(n, inner), C(n, inner);
+
+    cout << "Enter elements of matrix A:\n";
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            cin >> A[i][j];
+
+    cout << "Enter elements of matrix B:\n";
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            cin >> B[i][j];
+
+    strassen(A, B, C, n);
+
+    cout << "Resultant matrix C:\n";
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cout << C[i][j] << " ";
+        }
+        cout << endl;
+    }
 
     return 0;
 }
